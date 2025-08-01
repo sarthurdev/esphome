@@ -69,7 +69,7 @@ const uint8_t GREE_HDIR_MIDDLE = 0x04;
 const uint8_t GREE_HDIR_MRIGHT = 0x05;
 const uint8_t GREE_HDIR_RIGHT = 0x06;
 
-// Only available on YX1FF
+// Only available on YX1FF/YAG
 // Turbo (high) fan mode + sleep preset mode
 const uint8_t GREE_FAN_TURBO = 0x80;
 const uint8_t GREE_FAN_TURBO_BIT = 0x10;

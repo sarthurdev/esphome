@@ -52,11 +52,13 @@ void GreeClimate::transmit_state() {
     }
   }
 
-  if (this->model_ == GREE_YX1FF) {
+  if (this->model_ == GREE_YX1FF || this->model_ == GREE_YAG) {
     if (this->fan_speed_() == GREE_FAN_TURBO) {
       remote_state[2] |= GREE_FAN_TURBO_BIT;
     }
+  }
 
+  if (this->model_ == GREE_YX1FF) {
     if (this->preset_() == GREE_PRESET_SLEEP) {
       remote_state[0] |= GREE_PRESET_SLEEP_BIT;
     }
@@ -157,7 +159,7 @@ uint8_t GreeClimate::operation_mode_() {
 
 uint8_t GreeClimate::fan_speed_() {
   // YX1FF has 4 fan speeds -- we treat low as quiet and turbo as high
-  if (this->model_ == GREE_YX1FF) {
+  if (this->model_ == GREE_YX1FF || this->model_ == GREE_YAG) {
     switch (this->fan_mode.value()) {
       case climate::CLIMATE_FAN_QUIET:
         return GREE_FAN_1;
