@@ -11,27 +11,6 @@
 namespace esphome {
 namespace vl53l4cd {
 
-class VL53L4CDSensor : public sensor::Sensor, public PollingComponent, public i2c::I2CDevice {
-    public:
-        VL53L4CDSensor();
-
-        void setup() override;
-
-        void dump_config() override;
-        void update() override;
-
-        void loop() override;
-
-        void set_timeout_us(uint32_t timeout_us) { this->timeout_us_ = timeout_us; }
-        void set_timing_budget(uint32_t timing_budget) { this->measurement_timing_budget_us_ = timing_budget; }
-
-    private:
-        VL53L4CD sensor;
-
-        uint32_t measurement_timing_budget_us_{0};
-        uint16_t timeout_us_{};
-};
-
 class VL53L4CD
 {
   public:
@@ -146,6 +125,27 @@ class VL53L4CD
     bool checkTimeoutExpired() {return (io_timeout > 0) && ((uint16_t)(millis() - timeout_start_ms) > io_timeout); }
 
     void readResults();
+};
+
+class VL53L4CDSensor : public sensor::Sensor, public PollingComponent, public i2c::I2CDevice {
+    public:
+        VL53L4CDSensor();
+
+        void setup() override;
+
+        void dump_config() override;
+        void update() override;
+
+        void loop() override;
+
+        void set_timeout_us(uint32_t timeout_us) { this->timeout_us_ = timeout_us; }
+        void set_timing_budget(uint32_t timing_budget) { this->measurement_timing_budget_us_ = timing_budget; }
+
+    private:
+        VL53L4CD sensor;
+
+        uint32_t measurement_timing_budget_us_{0};
+        uint16_t timeout_us_{};
 };
 
 }  // namespace vl53l4cd
