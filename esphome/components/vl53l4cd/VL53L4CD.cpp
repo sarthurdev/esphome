@@ -10,9 +10,7 @@ namespace vl53l4cd {
 
 static const char *const TAG = "vl53l4cd";
 
-VL53L4CDSensor::VL53L4CDSensor() {
-    sensor = VL53L4CD();
-}
+VL53L4CDSensor::VL53L4CDSensor() : _sensor() {};
 
 void VL53L4CDSensor::dump_config() {
   LOG_SENSOR("", "VL53L4CD", this);
@@ -23,21 +21,21 @@ void VL53L4CDSensor::dump_config() {
 }
 
 void VL53L4CDSensor::setup() {
-    sensor.init(false);
-    sensor.setAddress(address_);
-    sensor.setTimeout(timeout_us_);
-    sensor.setTimingBudget(measurement_timing_budget_us_);
-    sensor.startContinuous();
+    _sensor.init(false);
+    _sensor.setAddress(address_);
+    _sensor.setTimeout(timeout_us_);
+    _sensor.setTimingBudget(measurement_timing_budget_us_);
+    _sensor.startContinuous();
 }
 
 void VL53L4CDSensor::update() {
-    if (!sensor.dataReady()) {
+    if (!_sensor.dataReady()) {
         this->publish_state(NAN);
         this->status_momentary_warning("update", 5000);
         ESP_LOGW(TAG, "%s - update called before prior reading complete",
              this->name_.c_str());
     }
-    if (sensor.timeoutOccurred()) {
+    if (_sensor.timeoutOccurred()) {
         this->publish_state(NAN);
         this->status_momentary_warning("update", 5000);
         ESP_LOGW(TAG, "%s - timeout while reading",
@@ -46,7 +44,7 @@ void VL53L4CDSensor::update() {
 }
 
 void VL53L4CDSensor::loop() {
-    uint16_t range_mm = sensor.read(false);
+    uint16_t range_mm = _sensor.read(false);
     float range_m = range_mm / 1e3f;
     ESP_LOGD(TAG, "'%s' - Got distance %.3f m", this->name_.c_str(), range_m);
     this->publish_state(range_m);

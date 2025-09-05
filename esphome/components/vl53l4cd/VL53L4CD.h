@@ -142,7 +142,7 @@ class VL53L4CDSensor : public sensor::Sensor, public PollingComponent, public i2
         void set_timing_budget(uint32_t timing_budget) { this->measurement_timing_budget_us_ = timing_budget; }
 
     private:
-        VL53L4CD sensor;
+        VL53L4CD _sensor;
 
         uint32_t measurement_timing_budget_us_{0};
         uint16_t timeout_us_{};
