@@ -144,6 +144,8 @@ class VL53L4CDSensor : public sensor::Sensor, public PollingComponent, public i2
     private:
         VL53L4CD _sensor;
 
+        bool update_wanted = false;
+
         uint32_t measurement_timing_budget_us_{0};
         uint16_t timeout_us_{};
 };

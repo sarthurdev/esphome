@@ -41,13 +41,18 @@ void VL53L4CDSensor::update() {
         ESP_LOGW(TAG, "%s - timeout while reading",
              this->name_.c_str());
     }
+
+    update_wanted = true;
 }
 
 void VL53L4CDSensor::loop() {
-    uint16_t range_mm = _sensor.read(false);
-    float range_m = range_mm / 1e3f;
-    ESP_LOGD(TAG, "'%s' - Got distance %.3f m", this->name_.c_str(), range_m);
-    this->publish_state(range_m);
+    if (update_wanted) {
+        uint16_t range_mm = _sensor.read(false);
+        float range_m = range_mm / 1e3f;
+        ESP_LOGD(TAG, "'%s' - Got distance %.3f m", this->name_.c_str(), range_m);
+        this->publish_state(range_m);
+        update_wanted = false;
+    }
 }
 
 // Constructors ////////////////////////////////////////////////////////////////
